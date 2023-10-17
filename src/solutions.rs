@@ -1,5 +1,5 @@
 pub mod solution_2022_1;
-mod solution_2022_2;
+pub mod solution_2022_2;
 
 pub trait Solution {
     fn solution_part_1(&self) -> Option<String>;
