@@ -48,8 +48,8 @@ impl InputDataService {
                     .unwrap()
                     .text()
                     .await
-                    .unwrap()
-                    .to_string();
+                    .unwrap();
+
                 create_dir("inputs");
                 let mut file = File::create(file_name).unwrap();
                 _input = input_from_api.clone();

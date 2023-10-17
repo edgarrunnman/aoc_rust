@@ -19,6 +19,7 @@ async fn main() {
         .unwrap();
     let solution2 = solutions::solution_2022_1::Solution2022_1 { input };
     let first_part = solution2.get_result(SolutionPart::First);
-    let foo2 = solution2.get_result(SolutionPart::Second);
-    println!("First solution result: {}", first_part);
+    let second_part = solution2.get_result(SolutionPart::Second);
+    println!("First solution result: {}", first_part.unwrap());
+    println!("First solution result: {}", second_part.unwrap());
 }

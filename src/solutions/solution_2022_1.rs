@@ -5,7 +5,7 @@ pub struct Solution2022_1 {
 }
 
 impl Solution for Solution2022_1 {
-    fn solution_part_1(&self) -> String {
+    fn solution_part_1(&self) -> Option<String> {
         self.input
             .split("\n\n")
             .map(|g| {
@@ -14,10 +14,20 @@ impl Solution for Solution2022_1 {
                     .sum::<u32>()
             })
             .max()
-            .unwrap()
-            .to_string()
+            .map(|n| n.to_string())
     }
-    fn solution_part_2(&self) -> String {
-        String::from("second part")
+
+    fn solution_part_2(&self) -> Option<String> {
+        let mut result = self
+            .input
+            .split("\n\n")
+            .map(|g| {
+                g.split("\n")
+                    .map(|c| c.parse::<u32>().unwrap_or_default())
+                    .sum::<u32>()
+            })
+            .collect::<Vec<u32>>();
+        result.sort();
+        Some(result.iter().rev().take(3).sum::<u32>().to_string())
     }
 }
