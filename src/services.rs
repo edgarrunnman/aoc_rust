@@ -6,6 +6,8 @@ use std::hash::{Hash, Hasher};
 use std::io::Read;
 use std::io::Write;
 
+use crate::solutions::SolutionIdentity;
+
 pub struct InputDataService {
     root_url: String,
     client: reqwest::Client,
@@ -23,21 +25,20 @@ impl InputDataService {
             session_token,
         }
     }
-    pub async fn get_input(&self, year: String, day: String) -> Result<String, String> {
+    pub async fn get_input(&self, id: &SolutionIdentity) -> Result<String, String> {
         let h = calculate_hash(&self.session_token);
-        let file_name = format!("inputs/{}_{}_{}.txt", h, year, day);
+        let file_name = format!("inputs/{}_{}_{}.txt", h, id.year, id.day);
         let mut _input = String::new();
         let mut file = OpenOptions::new().read(true).open(&file_name);
-        let file = file.as_mut();
 
-        let input_status = match file {
-            Ok(x) => {
+        let input_status = match file.as_mut() {
+            Ok(f) => {
                 println!("reading from file");
-                x.read_to_string(&mut _input)
+                f.read_to_string(&mut _input)
             }
             Err(_) => {
                 println!("reading from api");
-                let url = format!("{}/{}/day/{}/input", &self.root_url, year, day);
+                let url = format!("{}/{}/day/{}/input", &self.root_url, id.year, id.day);
                 let session_cookie = format!("session={}", &self.session_token);
                 let input_from_api = &self
                     .client

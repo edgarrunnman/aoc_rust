@@ -17,7 +17,7 @@ impl Solution for Solution2022_1 {
         let mut result = self
             .input
             .split("\n\n")
-            .map(|g| g.sum_of_group())
+            .map(|group| group.sum_of_group())
             .collect::<Vec<u32>>();
         result.sort();
         Some(result.iter().rev().take(3).sum::<u32>().to_string())

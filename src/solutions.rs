@@ -1,5 +1,17 @@
 pub mod solution_2022_1;
 pub mod solution_2022_2;
+pub mod solution_2022_3;
+
+pub struct SolutionIdentity {
+    pub year: u32,
+    pub day: u32,
+}
+
+impl SolutionIdentity {
+    pub fn new(year: u32, day: u32) -> SolutionIdentity {
+        SolutionIdentity { year, day }
+    }
+}
 
 pub trait Solution {
     fn solution_part_1(&self) -> Option<String>;
