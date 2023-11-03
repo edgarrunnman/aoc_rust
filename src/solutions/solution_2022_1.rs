@@ -1,10 +1,10 @@
 use super::Solution;
 
-pub struct Solution2022_1 {
+pub struct SolutionImp {
     pub input: String,
 }
 
-impl Solution for Solution2022_1 {
+impl Solution for SolutionImp {
     fn solution_part_1(&self) -> Option<String> {
         self.input
             .split("\n\n")

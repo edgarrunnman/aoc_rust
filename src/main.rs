@@ -16,7 +16,7 @@ async fn main() {
     let execution = input_service
         .get_input(&id)
         .await
-        .and_then(|input| Ok(solutions::solution_2022_1::Solution2022_1 { input }))
+        .and_then(|input| Ok(solutions::solution_2022_1::SolutionImp { input }))
         .and_then(|solution| Ok(execute_solution(id.day, solution)));
     execution.unwrap().await;
 
@@ -24,7 +24,7 @@ async fn main() {
     let execution = input_service
         .get_input(&id)
         .await
-        .and_then(|input| Ok(solutions::solution_2022_2::Solution2022_2 { input }))
+        .and_then(|input| Ok(solutions::solution_2022_2::SolutionImp { input }))
         .and_then(|solution| Ok(execute_solution(id.day, solution)));
     execution.unwrap().await;
 
@@ -32,7 +32,15 @@ async fn main() {
     let execution = input_service
         .get_input(&id)
         .await
-        .and_then(|input| Ok(solutions::solution_2022_3::Solution2022_3 { input }))
+        .and_then(|input| Ok(solutions::solution_2022_3::SolutionImp { input }))
+        .and_then(|solution| Ok(execute_solution(id.day, solution)));
+    execution.unwrap().await;
+
+    let id = SolutionIdentity::new(2022, 4);
+    let execution = input_service
+        .get_input(&id)
+        .await
+        .and_then(|input| Ok(solutions::solution_2022_4::SolutionImp { input }))
         .and_then(|solution| Ok(execute_solution(id.day, solution)));
     execution.unwrap().await;
 }
