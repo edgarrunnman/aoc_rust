@@ -44,6 +44,14 @@ async fn main() {
         .and_then(|solution| Ok(execute_solution(id.day, solution)));
     execution.unwrap().await;
 
+    let id = SolutionIdentity::new(2022, 5);
+    let execution = input_service
+        .get_input(&id)
+        .await
+        .and_then(|input| Ok(solutions::solution_2022_5::SolutionImp { input }))
+        .and_then(|solution| Ok(execute_solution(id.day, solution)));
+    execution.unwrap().await;
+
     let id = SolutionIdentity::new(2022, 6);
     let execution = input_service
         .get_input(&id)

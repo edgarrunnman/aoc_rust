@@ -29,15 +29,17 @@ impl Solution for SolutionImp {
 fn make_range_pair(line: &str) -> ((u32, u32), (u32, u32)) {
     let pair = line
         .split(',')
-        .map(|range_string| {
-            let range = range_string
-                .split('-')
-                .map(|n| n.parse::<u32>().unwrap())
-                .collect::<Vec<u32>>();
-            (range[0], range[1])
-        })
+        .map(range_string_to_u32)
         .collect::<Vec<(u32, u32)>>();
     (pair[0], pair[1])
+}
+
+fn range_string_to_u32(string: &str) -> (u32, u32) {
+    let range = string
+        .split('-')
+        .map(|n| n.parse::<u32>().unwrap())
+        .collect::<Vec<u32>>();
+    (range[0], range[1])
 }
 
 fn filter_overlapped(pair: &((u32, u32), (u32, u32))) -> bool {
