@@ -11,7 +11,7 @@ impl Solution for SolutionImp {
             .lines()
             .map(split_half)
             .map(|split| {
-                get_common_chars(String::from(split.0), String::from(split.1))
+                get_common_chars_2(split)
                     .and_then(|comon| comon.chars().nth(0))
                     .and_then(get_priority_value)
                     .unwrap_or_default()
@@ -40,6 +40,14 @@ fn get_common_chars(first: String, second: String) -> Option<String> {
         first
             .chars()
             .filter(|&char| second.contains(char))
+            .collect::<String>(),
+    )
+}
+fn get_common_chars_2(pair: (&str, &str)) -> Option<String> {
+    Some(
+        pair.0
+            .chars()
+            .filter(|&char| pair.1.contains(char))
             .collect::<String>(),
     )
 }

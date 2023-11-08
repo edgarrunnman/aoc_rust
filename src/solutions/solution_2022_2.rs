@@ -9,8 +9,8 @@ impl Solution for SolutionImp {
         let foo: u32 = self
             .input
             .split("\n")
-            .filter(|c| c != &"")
-            .map(|c| ((c.code(2) - c.code(0) + 2) % 3) * 3 + (c.code(2) - 87))
+            .filter(str_not_empty)
+            .map(session_score)
             .sum();
         Some(foo.to_string())
     }
@@ -19,8 +19,8 @@ impl Solution for SolutionImp {
         let foo: u32 = self
             .input
             .split("\n")
-            .filter(|c| c != &"")
-            .map(|c| (c.code(2) - 88) * 3 + ((c.code(2) + c.code(0) - 1) % 3) + 1)
+            .filter(str_not_empty)
+            .map(session_score_second)
             .sum();
         Some(foo.to_string())
     }
@@ -34,4 +34,16 @@ impl Extensions for &str {
     fn code(&self, index: usize) -> u32 {
         self.chars().nth(index).unwrap_or_default() as u32
     }
+}
+
+fn str_not_empty(string: &&str) -> bool {
+    string != &""
+}
+
+fn session_score(str: &str) -> u32 {
+    ((str.code(2) - str.code(0) + 2) % 3) * 3 + (str.code(2) - 87)
+}
+
+fn session_score_second(str: &str) -> u32 {
+    (str.code(2) - 88) * 3 + ((str.code(2) + str.code(0) - 1) % 3) + 1
 }
