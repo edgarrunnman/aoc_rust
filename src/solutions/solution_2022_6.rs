@@ -6,6 +6,8 @@ pub struct SolutionImp {
 
 impl Solution for SolutionImp {
     fn solution_part_1(&self) -> Option<String> {
+        // let foo = self.input[0..4];
+        // println!("{:?}", foo);
         None
     }
 
