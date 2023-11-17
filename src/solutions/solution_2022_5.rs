@@ -10,8 +10,8 @@ impl Solution for SolutionImp {
         let mut stacks = make_stacks(&data);
         for command in parse_commands(commands) {
             for _ in 0..command.amount {
-                let char = stacks[command.from - 1].pop().unwrap();
-                stacks[command.to - 1].push(char);
+                let char = stacks[command.from].pop().unwrap();
+                stacks[command.to].push(char);
             }
         }
         Some(
@@ -29,19 +29,14 @@ impl Solution for SolutionImp {
         let (data, commands) = to_data_and_commands(&self.input);
         let mut stacks = make_stacks(&data);
         for command in parse_commands(commands) {
-            let cargo: String = stacks[command.from - 1]
-                .chars()
-                .rev()
-                .take(command.amount as usize)
-                .collect();
-
-            stacks[command.from - 1] = stacks[command.from - 1]
+            let pack = create_pack(&stacks, &command);
+            stacks[command.from] = stacks[command.from]
                 .chars()
                 .into_iter()
-                .take(stacks[command.from - 1].len() - cargo.chars().into_iter().count())
+                .take(stacks[command.from].len() - pack.chars().into_iter().count())
                 .collect();
 
-            stacks[command.to - 1].push_str(&cargo);
+            stacks[command.to].push_str(&pack);
         }
         Some(
             stacks
@@ -87,9 +82,20 @@ fn from_line(line: &str) -> Command {
     let parts = line.split(" ").collect::<Vec<&str>>();
     Command {
         amount: parts[1].parse::<u8>().unwrap(),
-        from: parts[3].parse::<usize>().unwrap(),
-        to: parts[5].parse::<usize>().unwrap(),
+        from: parts[3].parse::<usize>().unwrap() - 1,
+        to: parts[5].parse::<usize>().unwrap() - 1,
     }
+}
+
+fn create_pack(stacks: &Vec<String>, cmd: &Command) -> String {
+    stacks[cmd.from]
+        .chars()
+        .rev()
+        .take(cmd.amount as usize)
+        .collect::<String>()
+        .chars()
+        .rev()
+        .collect()
 }
 
 #[derive(Debug)]
