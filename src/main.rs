@@ -5,79 +5,43 @@ extern crate reqwest;
 
 use dotenv::dotenv;
 use services::InputDataService;
-use solutions::{Solution, SolutionIdentity, SolutionPart};
+use solutions::*;
 
 #[tokio::main]
 async fn main() {
     dotenv().ok();
     let input_service = InputDataService::new();
 
-    let id = SolutionIdentity::new(2022, 1);
-    let execution = input_service
-        .get_input(&id)
-        .await
-        .and_then(|input| Ok(solutions::solution_2022_1::SolutionImp { input }))
-        .and_then(|solution| Ok(execute_solution(id.day, solution)));
-    execution.unwrap().await;
-
-    let id = SolutionIdentity::new(2022, 2);
-    let execution = input_service
-        .get_input(&id)
-        .await
-        .and_then(|input| Ok(solutions::solution_2022_2::SolutionImp { input }))
-        .and_then(|solution| Ok(execute_solution(id.day, solution)));
-    execution.unwrap().await;
-
-    let id = SolutionIdentity::new(2022, 3);
-    let execution = input_service
-        .get_input(&id)
-        .await
-        .and_then(|input| Ok(solutions::solution_2022_3::SolutionImp { input }))
-        .and_then(|solution| Ok(execute_solution(id.day, solution)));
-    execution.unwrap().await;
-
-    let id = SolutionIdentity::new(2022, 4);
-    let execution = input_service
-        .get_input(&id)
-        .await
-        .and_then(|input| Ok(solutions::solution_2022_4::SolutionImp { input }))
-        .and_then(|solution| Ok(execute_solution(id.day, solution)));
-    execution.unwrap().await;
-
-    let id = SolutionIdentity::new(2022, 5);
-    let execution = input_service
-        .get_input(&id)
-        .await
-        .and_then(|input| Ok(solutions::solution_2022_5::SolutionImp { input }))
-        .and_then(|solution| Ok(execute_solution(id.day, solution)));
-    execution.unwrap().await;
-
-    let id = SolutionIdentity::new(2022, 6);
-    let execution = input_service
-        .get_input(&id)
-        .await
-        .and_then(|input| Ok(solutions::solution_2022_6::SolutionImp { input }))
-        .and_then(|solution| Ok(execute_solution(id.day, solution)));
-    execution.unwrap().await;
+    execute_day::<solution_2022_1::SolutionImp>(&input_service, 2022, 1).await;
+    execute_day::<solution_2022_2::SolutionImp>(&input_service, 2022, 2).await;
+    execute_day::<solution_2022_3::SolutionImp>(&input_service, 2022, 3).await;
+    execute_day::<solution_2022_4::SolutionImp>(&input_service, 2022, 4).await;
+    execute_day::<solution_2022_5::SolutionImp>(&input_service, 2022, 5).await;
+    execute_day::<solution_2022_6::SolutionImp>(&input_service, 2022, 6).await;
+    execute_day::<solution_2022_7::SolutionImp>(&input_service, 2022, 7).await;
 }
-
-async fn execute_solution<S>(day: u32, solution: S)
+async fn execute_day<S>(input_service: &InputDataService, year: u16, day: u16)
 where
-    S: Solution,
+    S: Solution<S>,
 {
-    let first_part = solution.get_result(SolutionPart::First);
-    let second_part = solution.get_result(SolutionPart::Second);
-    println!(
-        "Day {}, First solution result: {}",
-        day,
-        first_part.unwrap_or_else(return_not_imp)
-    );
-    println!(
-        "Day {}, Second solution result: {}",
-        day,
-        second_part.unwrap_or_else(return_not_imp)
-    );
+    let solutions = input_service
+        .get_input(year, day)
+        .await
+        .and_then(|input| Ok(S::new(input)))
+        .and_then(|solution| {
+            Ok((
+                solution
+                    .get_result(SolutionPart::First)
+                    .unwrap_or(not_imp()),
+                solution
+                    .get_result(SolutionPart::Second)
+                    .unwrap_or(not_imp()),
+            ))
+        })
+        .unwrap();
+    println!("Day {}, First solution result: {}", day, solutions.0);
+    println!("Day {}, Second solution result: {}", day, solutions.1);
 }
-fn return_not_imp() -> String {
+fn not_imp() -> String {
     String::from("not implemented")
 }

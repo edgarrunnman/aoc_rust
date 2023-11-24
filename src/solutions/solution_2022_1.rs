@@ -4,7 +4,7 @@ pub struct SolutionImp {
     pub input: String,
 }
 
-impl Solution for SolutionImp {
+impl Solution<SolutionImp> for SolutionImp {
     fn solution_part_1(&self) -> Option<String> {
         self.input
             .split("\n\n")
@@ -21,6 +21,10 @@ impl Solution for SolutionImp {
             .collect::<Vec<u32>>();
         result.sort();
         Some(result.iter().rev().take(3).sum::<u32>().to_string())
+    }
+
+    fn new(input: String) -> SolutionImp {
+        SolutionImp { input }
     }
 }
 

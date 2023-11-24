@@ -4,7 +4,7 @@ pub struct SolutionImp {
     pub input: String,
 }
 
-impl Solution for SolutionImp {
+impl Solution<SolutionImp> for SolutionImp {
     fn solution_part_1(&self) -> Option<String> {
         let result = self
             .input
@@ -23,6 +23,10 @@ impl Solution for SolutionImp {
             .filter(filter_touching)
             .count();
         Some(result.to_string())
+    }
+
+    fn new(input: String) -> SolutionImp {
+        SolutionImp { input }
     }
 }
 

@@ -4,7 +4,7 @@ pub struct SolutionImp {
     pub input: String,
 }
 
-impl Solution for SolutionImp {
+impl Solution<SolutionImp> for SolutionImp {
     fn solution_part_1(&self) -> Option<String> {
         let result: u32 = self
             .input
@@ -32,6 +32,10 @@ impl Solution for SolutionImp {
             })
             .sum();
         Some(result.to_string())
+    }
+
+    fn new(input: String) -> SolutionImp {
+        SolutionImp { input }
     }
 }
 

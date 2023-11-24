@@ -4,7 +4,7 @@ pub struct SolutionImp {
     pub input: String,
 }
 
-impl Solution for SolutionImp {
+impl Solution<SolutionImp> for SolutionImp {
     fn solution_part_1(&self) -> Option<String> {
         let foo: u32 = self
             .input
@@ -23,6 +23,10 @@ impl Solution for SolutionImp {
             .map(session_score_second)
             .sum();
         Some(foo.to_string())
+    }
+
+    fn new(input: String) -> SolutionImp {
+        SolutionImp { input }
     }
 }
 

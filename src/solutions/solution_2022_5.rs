@@ -4,7 +4,7 @@ pub struct SolutionImp {
     pub input: String,
 }
 
-impl Solution for SolutionImp {
+impl Solution<SolutionImp> for SolutionImp {
     fn solution_part_1(&self) -> Option<String> {
         let (data, commands) = to_data_and_commands(&self.input);
         let mut stacks = make_stacks(&data);
@@ -47,6 +47,10 @@ impl Solution for SolutionImp {
                     acc
                 }),
         )
+    }
+
+    fn new(input: String) -> SolutionImp {
+        SolutionImp { input }
     }
 }
 

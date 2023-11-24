@@ -4,19 +4,10 @@ pub mod solution_2022_3;
 pub mod solution_2022_4;
 pub mod solution_2022_5;
 pub mod solution_2022_6;
+pub mod solution_2022_7;
 
-pub struct SolutionIdentity {
-    pub year: u32,
-    pub day: u32,
-}
-
-impl SolutionIdentity {
-    pub fn new(year: u32, day: u32) -> SolutionIdentity {
-        SolutionIdentity { year, day }
-    }
-}
-
-pub trait Solution {
+pub trait Solution<T> {
+    fn new(input: String) -> T;
     fn solution_part_1(&self) -> Option<String>;
     fn solution_part_2(&self) -> Option<String>;
 

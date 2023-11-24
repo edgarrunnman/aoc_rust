@@ -5,13 +5,17 @@ pub struct SolutionImp {
     pub input: String,
 }
 
-impl Solution for SolutionImp {
+impl Solution<SolutionImp> for SolutionImp {
     fn solution_part_1(&self) -> Option<String> {
         find_packet_marker(4, &self.input)
     }
 
     fn solution_part_2(&self) -> Option<String> {
         find_packet_marker(14, &self.input)
+    }
+
+    fn new(input: String) -> SolutionImp {
+        SolutionImp { input }
     }
 }
 
