@@ -39,8 +39,8 @@ where
             ))
         })
         .unwrap();
-    println!("Day {}, First solution result: {}", day, solutions.0);
-    println!("Day {}, Second solution result: {}", day, solutions.1);
+    println!("{}-{}, First solution result: {}", year, day, solutions.0);
+    println!("{}-{}, Second solution result: {}", year, day, solutions.1);
 }
 fn not_imp() -> String {
     String::from("not implemented")

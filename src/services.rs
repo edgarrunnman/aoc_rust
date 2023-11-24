@@ -17,7 +17,8 @@ impl InputDataService {
     pub fn new() -> InputDataService {
         let root_url = String::from("https://adventofcode.com");
         let client = reqwest::Client::new();
-        let session_token = std::env::var("SESSION_TOKEN").expect("");
+        let session_token =
+            std::env::var("SESSION_TOKEN").expect("provide SESSION_TOKEN in .env file");
         InputDataService {
             root_url,
             client,
@@ -46,6 +47,10 @@ impl InputDataService {
                     .header("cookie", session_cookie)
                     .send()
                     .await
+                    .and_then(|respons| match respons.status().as_u16() {
+                        200 => Ok(respons),
+                        _ => panic!("Problem with API, respons code: {}", respons.status()),
+                    })
                     .unwrap()
                     .text()
                     .await
