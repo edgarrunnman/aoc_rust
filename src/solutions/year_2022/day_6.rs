@@ -1,4 +1,4 @@
-use super::Solution;
+use crate::Solution;
 use std::iter::Iterator;
 
 pub struct SolutionImp {

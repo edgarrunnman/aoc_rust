@@ -12,13 +12,15 @@ async fn main() {
     dotenv().ok();
     let input_service = InputDataService::new();
 
-    execute_day::<solution_2022_1::SolutionImp>(&input_service, 2022, 1).await;
-    execute_day::<solution_2022_2::SolutionImp>(&input_service, 2022, 2).await;
-    execute_day::<solution_2022_3::SolutionImp>(&input_service, 2022, 3).await;
-    execute_day::<solution_2022_4::SolutionImp>(&input_service, 2022, 4).await;
-    execute_day::<solution_2022_5::SolutionImp>(&input_service, 2022, 5).await;
-    execute_day::<solution_2022_6::SolutionImp>(&input_service, 2022, 6).await;
-    execute_day::<solution_2022_7::SolutionImp>(&input_service, 2022, 7).await;
+    execute_day::<year_2022::day_1::SolutionImp>(&input_service, 2022, 1).await;
+    execute_day::<year_2022::day_2::SolutionImp>(&input_service, 2022, 2).await;
+    execute_day::<year_2022::day_3::SolutionImp>(&input_service, 2022, 3).await;
+    execute_day::<year_2022::day_4::SolutionImp>(&input_service, 2022, 4).await;
+    execute_day::<year_2022::day_5::SolutionImp>(&input_service, 2022, 5).await;
+    execute_day::<year_2022::day_6::SolutionImp>(&input_service, 2022, 6).await;
+    execute_day::<year_2022::day_7::SolutionImp>(&input_service, 2022, 7).await;
+
+    execute_day::<year_2023::day_1::SolutionImp>(&input_service, 2023, 1).await;
 }
 async fn execute_day<S>(input_service: &InputDataService, year: u16, day: u16)
 where

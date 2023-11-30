@@ -1,10 +1,5 @@
-pub mod solution_2022_1;
-pub mod solution_2022_2;
-pub mod solution_2022_3;
-pub mod solution_2022_4;
-pub mod solution_2022_5;
-pub mod solution_2022_6;
-pub mod solution_2022_7;
+pub mod year_2022;
+pub mod year_2023;
 
 pub trait Solution<T> {
     fn new(input: String) -> T;
