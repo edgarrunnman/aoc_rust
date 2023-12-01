@@ -17,3 +17,20 @@ impl Solution<SolutionImp> for SolutionImp {
         SolutionImp { input }
     }
 }
+
+pub(crate) fn test_first() {
+    let test_input = "";
+    let test_result = "";
+    let test_input = String::from(test_input);
+    let test_result = String::from(test_result);
+    let solution = SolutionImp::new(test_input);
+    assert_eq!(test_result, solution.solution_part_1().unwrap())
+}
+pub(crate) fn test_second() {
+    let test_input = "";
+    let test_result = "";
+    let test_input = String::from(test_input);
+    let test_result = String::from(test_result);
+    let solution = SolutionImp::new(test_input);
+    assert_eq!(test_result, solution.solution_part_2().unwrap())
+}
