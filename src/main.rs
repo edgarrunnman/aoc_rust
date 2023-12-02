@@ -12,11 +12,12 @@ async fn main() {
     dotenv().ok();
     let input_service = InputDataService::new();
 
-    year_2023::day_1::test_first();
-    year_2023::day_1::test_second();
-
-    execute_day::<year_2023::day_1::SolutionImp>(&input_service, 2023, 1).await;
+    year_2023::day_2::test_first();
+    year_2023::day_2::test_second();
+    //
+    execute_day::<year_2023::day_2::SolutionImp>(&input_service, 2023, 2).await;
 }
+
 async fn execute_day<S>(input_service: &InputDataService, year: u16, day: u16)
 where
     S: Solution<S>,
