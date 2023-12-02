@@ -57,7 +57,8 @@ impl Solution<SolutionImp> for SolutionImp {
     }
 }
 
-pub(crate) fn test_first() {
+#[test]
+fn test_first() {
     let test_input = "1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
@@ -69,7 +70,8 @@ treb7uchet";
     assert_eq!(test_result, solution.solution_part_1().unwrap())
 }
 
-pub(crate) fn test_second() {
+#[test]
+fn test_second() {
     let test_input = "two1nine
 eightwothree
 abcone2threexyz

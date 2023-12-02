@@ -18,7 +18,8 @@ impl Solution<SolutionImp> for SolutionImp {
     }
 }
 
-pub(crate) fn test_first() {
+#[test]
+fn test_first() {
     let test_input = "";
     let test_result = "";
     let test_input = String::from(test_input);
@@ -26,7 +27,8 @@ pub(crate) fn test_first() {
     let solution = SolutionImp::new(test_input);
     assert_eq!(test_result, solution.solution_part_1().unwrap())
 }
-pub(crate) fn test_second() {
+#[test]
+fn test_second() {
     let test_input = "";
     let test_result = "";
     let test_input = String::from(test_input);
