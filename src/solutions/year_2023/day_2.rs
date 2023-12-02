@@ -12,7 +12,7 @@ impl Solution<SolutionImp> for SolutionImp {
             .input
             .lines()
             .map(|line| {
-                let game_and_sets = line.split(':').collect::<Vec<&str>>();
+                let game_and_sets = line.split(": ").collect::<Vec<&str>>();
                 let game_id = game_and_sets[0].split(' ').collect::<Vec<&str>>()[1]
                     .parse::<u16>()
                     .unwrap();
@@ -32,7 +32,7 @@ impl Solution<SolutionImp> for SolutionImp {
             .lines()
             .into_iter()
             .map(|line| {
-                let sets = line.split(':').collect::<Vec<&str>>()[1];
+                let sets = line.split(": ").collect::<Vec<&str>>()[1];
                 let sets = normalize_sets(sets);
                 set_power(sets)
             })
@@ -49,15 +49,16 @@ impl Solution<SolutionImp> for SolutionImp {
 fn normalize_sets(sets: &str) -> Vec<HashMap<&str, u16>> {
     sets.split("; ")
         .map(|set| {
-            let set = set.split(",").map(|it| it.trim()).collect::<Vec<&str>>();
+            let set = set.split(", ").collect::<Vec<&str>>();
             normalize_set(&set)
         })
         .collect()
 }
+
 fn normalize_set<'a>(gems: &Vec<&'a str>) -> HashMap<&'a str, u16> {
     gems.iter()
         .map(|gem| {
-            let gems_amount = gem.split(' ').map(|it| it.trim()).collect::<Vec<&str>>();
+            let gems_amount = gem.split(' ').collect::<Vec<&str>>();
             let n = gems_amount[0].parse::<u16>().unwrap();
             let color = gems_amount[1];
             (color, n)
@@ -70,20 +71,20 @@ fn set_power(sets: Vec<HashMap<&str, u16>>) -> u64 {
     let mut green: u16 = 0;
     let mut blue: u16 = 0;
     let zero: u16 = 0;
-    for set in &sets {
-        let set_red = set.get("red").unwrap_or(&zero).clone();
-        let set_green = set.get("green").unwrap_or(&zero).clone();
-        let set_blue = set.get("blue").unwrap_or(&zero).clone();
-        if set_red > red {
-            red = set_red
+    sets.into_iter().for_each(|set| {
+        let set_red = set.get("red").unwrap_or(&zero);
+        let set_green = set.get("green").unwrap_or(&zero);
+        let set_blue = set.get("blue").unwrap_or(&zero);
+        if set_red > &red {
+            red = set_red.clone()
         }
-        if set_green > green {
-            green = set_green
+        if set_green > &green {
+            green = set_green.clone()
         }
-        if set_blue > blue {
-            blue = set_blue
+        if set_blue > &blue {
+            blue = set_blue.clone()
         }
-    }
+    });
     red as u64 * green as u64 * blue as u64
 }
 
@@ -96,16 +97,9 @@ fn valid_set(set: &HashMap<&str, u16>) -> bool {
     let max_red: u16 = 12;
     let max_green: u16 = 13;
     let zero: u16 = 0;
-    if set.get("blue").unwrap_or(&zero) > &max_blue {
-        return false;
-    }
-    if set.get("red").unwrap_or(&zero) > &max_red {
-        return false;
-    }
-    if set.get("green").unwrap_or(&zero) > &max_green {
-        return false;
-    }
-    return true;
+    set.get("blue").unwrap_or(&zero) <= &max_blue
+        && set.get("red").unwrap_or(&zero) <= &max_red
+        && set.get("green").unwrap_or(&zero) <= &max_green
 }
 
 #[test]
