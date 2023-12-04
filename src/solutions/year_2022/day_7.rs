@@ -1,3 +1,5 @@
+use std::collections::{hash_map, HashMap};
+
 use crate::Solution;
 
 pub struct SolutionImp {
@@ -6,19 +8,26 @@ pub struct SolutionImp {
 
 impl Solution<SolutionImp> for SolutionImp {
     fn solution_part_1(&self) -> Option<String> {
-        let mut cmd_state = "w8";
-        let mut current_directory = Directory::new("root", None);
-
+        let mut directory_container: HashMap<u8, Directory> = HashMap::new();
+        let mut current_directory_id: u8 = 0;
+        directory_container.insert(
+            current_directory_id,
+            Directory::new(current_directory_id, "/".to_string(), None),
+        );
+        println!("initial container {:?}", directory_container);
         for line in self.input.lines().into_iter() {
-            if line == "$ ls" {
-                cmd_state = "reading";
-                continue;
-            };
             if line.to_string().starts_with("dir ") {
                 let dir_name = *line.split(" ").collect::<Vec<&str>>().get(1).unwrap();
-                let new_dir = Directory::new(dir_name, None);
-                current_directory.directories.push(new_dir);
-                continue;
+                let dir_id = get_new_id(&directory_container);
+                let new_dir =
+                    Directory::new(dir_id, dir_name.to_string(), Some(current_directory_id));
+                let mut dir_owned = directory_container
+                    .get(&current_directory_id)
+                    .unwrap()
+                    .to_owned();
+                dir_owned.add_directory(dir_name.to_string(), dir_id);
+                directory_container.insert(dir_owned.id, dir_owned);
+                directory_container.insert(new_dir.id, new_dir);
             }
             if line.to_string().chars().next().unwrap().is_digit(10) {
                 let size = line
@@ -29,21 +38,33 @@ impl Solution<SolutionImp> for SolutionImp {
                     .parse::<u32>()
                     .unwrap();
                 let name = *line.split(" ").collect::<Vec<&str>>().get(1).unwrap();
-                let new_file = File { name, size };
-                current_directory.files.push(new_file);
-                continue;
+                let mut dir_owned = directory_container
+                    .get(&current_directory_id)
+                    .unwrap()
+                    .to_owned();
+                dir_owned.add_file(name.to_string(), size);
+                directory_container.insert(dir_owned.id, dir_owned);
             }
-            if line.to_string().starts_with("$ cd ") {
+            if line.to_string().starts_with("$ cd ")
+                && !line.to_string().eq("$ cd ..")
+                && !line.to_string().eq("$ cd /")
+            {
                 let dir_name = *line.split(" ").collect::<Vec<&str>>().get(2).unwrap();
-                current_directory = current_directory
-                    .directories
-                    .into_iter()
-                    .find(|dir| dir.name == dir_name)
-                    .unwrap();
-                continue;
+
+                current_directory_id = directory_container
+                    .get(&current_directory_id)
+                    .unwrap()
+                    .get_sub_directory_ref(dir_name);
+            }
+            if line.to_string().eq("$ cd ..") {
+                current_directory_id = directory_container
+                    .get(&current_directory_id)
+                    .unwrap()
+                    .get_parent_dir_ref();
             }
         }
-        None
+        print!("{:?}", directory_container);
+        Some("".to_string())
     }
 
     fn solution_part_2(&self) -> Option<String> {
@@ -54,53 +75,69 @@ impl Solution<SolutionImp> for SolutionImp {
         SolutionImp { input }
     }
 }
-
-#[derive(Debug)]
-struct Directory<'a> {
-    name: &'a str,
-    parent_directory: Option<&'a Directory<'a>>,
-    directories: Vec<Directory<'a>>,
-    files: Vec<File<'a>>,
+fn get_new_id(register: &HashMap<u8, Directory>) -> u8 {
+    register.len() as u8
 }
 
-// impl<'a> Clone for Directory<'a>
-//     fn clone(&self) -> Self {
-//         Self {
-//             name: self.name.clone(),
-//             directories: self.directories.clone(),
-//             files: self.files.clone(),
-//         }
-//     }
-// }
+#[derive(Debug)]
+struct Directory {
+    id: u8,
+    name: String,
+    parent_ref: Option<u8>,
+    directorie_refs: HashMap<String, u8>,
+    files: Vec<File>,
+}
 
-impl<'a, 'b: 'a> Directory<'a> {
-    fn new(name: &'a str, parent_dir: Option<&'b Directory>) -> Directory<'a> {
+impl Clone for Directory {
+    fn clone(&self) -> Self {
+        Self {
+            id: self.id.clone(),
+            name: self.name.clone(),
+            parent_ref: self.parent_ref.clone(),
+            directorie_refs: self.directorie_refs.clone(),
+            files: self.files.clone(),
+        }
+    }
+}
+
+impl Directory {
+    fn new(id: u8, name: String, parent_ref: Option<u8>) -> Directory {
         Directory {
+            id,
             name,
-            parent_directory: parent_dir,
-            directories: vec![],
+            parent_ref,
+            directorie_refs: HashMap::new(),
             files: vec![],
         }
     }
-    // fn add_directory(&mut self, directory: &'a Directory) {
-    //     self.directories.push(directory);
-    // }
+    fn get_sub_directory_ref(&self, name: &str) -> u8 {
+        self.directorie_refs.get(name).unwrap().clone()
+    }
+    fn get_parent_dir_ref(&self) -> u8 {
+        self.parent_ref.unwrap().clone()
+    }
+    fn add_file(&mut self, name: String, size: u32) {
+        self.files.push(File { name, size });
+    }
+    fn add_directory(&mut self, key: String, id: u8) {
+        self.directorie_refs.insert(key, id);
+    }
 }
 
 #[derive(Debug)]
-struct File<'a> {
-    name: &'a str,
+struct File {
+    name: String,
     size: u32,
 }
 
-// impl<'a> Clone for File<'a> {
-//     fn clone(&self) -> Self {
-//         Self {
-//             name: self.name.clone(),
-//             size: self.size.clone(),
-//         }
-//     }
-// }
+impl Clone for File {
+    fn clone(&self) -> Self {
+        Self {
+            name: self.name.clone(),
+            size: self.size.clone(),
+        }
+    }
+}
 
 #[test]
 fn test_first() {
