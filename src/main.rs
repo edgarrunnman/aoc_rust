@@ -23,7 +23,8 @@ async fn main() {
     //
     // execute_day::<year_2023::day_1::SolutionImp>(&input_service, 2023, 1).await;
     // execute_day::<year_2023::day_2::SolutionImp>(&input_service, 2023, 2).await;
-    execute_day::<year_2023::day_3::SolutionImp>(&input_service, 2023, 3).await;
+    // execute_day::<year_2023::day_3::SolutionImp>(&input_service, 2023, 3).await;
+    execute_day::<year_2023::day_4::SolutionImp>(&input_service, 2023, 4).await;
 }
 
 async fn execute_day<S>(input_service: &InputDataService, year: u16, day: u16)
