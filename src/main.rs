@@ -26,6 +26,7 @@ async fn main() {
     // execute_day::<year_2023::day_3::SolutionImp>(&input_service, 2023, 3).await;
     // execute_day::<year_2023::day_4::SolutionImp>(&input_service, 2023, 4).await;
     execute_day::<year_2023::day_5::SolutionImp>(&input_service, 2023, 5).await;
+    execute_day::<year_2023::day_6::SolutionImp>(&input_service, 2023, 6).await;
 }
 
 async fn execute_day<S>(input_service: &InputDataService, year: u16, day: u16)
