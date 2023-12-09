@@ -86,8 +86,7 @@ impl Solution<SolutionImp> for SolutionImp {
         SolutionImp { input }
     }
 }
-
-fn directions<'a>(input: &str) -> (String, String) {
+fn directions(input: &str) -> (String, String) {
     let directions = input.split(", ").collect::<Vec<&str>>();
     let left = directions.first().unwrap().replace("(", "");
     let right = directions.last().unwrap().replace(")", "");
