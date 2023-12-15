@@ -29,9 +29,10 @@ async fn main() {
     // execute_day::<year_2023::day_6::SolutionImp>(&input_service, 2023, 6).await;
     // execute_day::<year_2023::day_7::SolutionImp>(&input_service, 2023, 7).await;
     // execute_day::<year_2023::day_8::SolutionImp>(&input_service, 2023, 8).await;
-    //execute_day::<year_2023::day_9::SolutionImp>(&input_service, 2023, 9).await;
-    //execute_day::<year_2023::day_10::SolutionImp>(&input_service, 2023, 10).await;
-    //execute_day::<year_2023::day_11::SolutionImp>(&input_service, 2023, 11).await;
+    // execute_day::<year_2023::day_9::SolutionImp>(&input_service, 2023, 9).await;
+    // execute_day::<year_2023::day_10::SolutionImp>(&input_service, 2023, 10).await;
+    // execute_day::<year_2023::day_11::SolutionImp>(&input_service, 2023, 11).await;
+    // execute_day::<year_2023::day_12::SolutionImp>(&input_service, 2023, 12).await;
     execute_day::<year_2023::day_13::SolutionImp>(&input_service, 2023, 13).await;
 }
 

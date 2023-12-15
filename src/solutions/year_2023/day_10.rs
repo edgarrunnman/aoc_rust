@@ -50,13 +50,13 @@ impl Solution<SolutionImp> for SolutionImp {
 
         let start_p = start_position(&map).unwrap();
         let (mut map, mut path) = path_finder(start_p, start_p, map);
-        print_map(&map, start_p);
+        // print_map(&map, start_p);
         path.push(start_p);
         path.reverse();
         map = mark_inner_loop(path, map);
-        print_map(&map, start_p);
+        // print_map(&map, start_p);
         let map = fill_inner(map);
-        print_map(&map, start_p);
+        // print_map(&map, start_p);
         let count_inner = map
             .into_iter()
             .map(|line| line.iter().filter(|cell| cell.symb == '*').count())
@@ -272,6 +272,7 @@ impl PartialEq for Cell {
 }
 
 type Map = Vec<Vec<Cell>>;
+#[allow(dead_code)]
 fn print_map(map: &Map, p: Position) {
     for (x, line) in map.into_iter().enumerate() {
         for (y, cell) in line.into_iter().enumerate() {

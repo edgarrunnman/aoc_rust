@@ -1,3 +1,4 @@
+#[allow(unused_imports)]
 use colored::Colorize;
 
 use crate::Solution;
@@ -131,7 +132,7 @@ fn symetric_index(i: usize, pattern: &Vec<String>) -> bool {
     }
     true
 }
-
+#[allow(unused_variables)]
 fn get_symetry_index_with_smuge(pattern: &Vec<String>, rot: bool) -> Option<usize> {
     let lenght = pattern.len();
     let anti_indexes = pattern
