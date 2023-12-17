@@ -1,4 +1,5 @@
-use colored::Colorize;
+use std::collections::hash_map::DefaultHasher;
+use std::hash::{Hash, Hasher};
 
 use crate::Solution;
 
@@ -13,7 +14,7 @@ impl Solution<SolutionImp> for SolutionImp {
             .lines()
             .map(|line| line.to_string())
             .collect::<Vec<_>>();
-        let foo = swap_axis(foo);
+        let foo = swap_axis(&foo);
 
         let mut result = 0;
         let mut new_foo = vec![];
@@ -49,30 +50,59 @@ impl Solution<SolutionImp> for SolutionImp {
     }
 
     fn solution_part_2(&self) -> Option<String> {
-        let mut foo = self
+        let foo = self
             .input
             .lines()
             .map(|line| line.to_string())
             .collect::<Vec<_>>();
-        let cyckles: u64 = 1000;
+        let cyckles: u64 = 1000000000;
 
-        let (list, platform) = (0..cyckles)
+        let (_, platform) = (0..1000)
             .into_iter()
             .fold((vec![], foo), |acc, _| one_cykle(acc.0, acc.1));
 
-        println!("{:?}", list);
-        Some(list.last().unwrap().to_string())
+        let (mut pattern, _) = (0..100)
+            .into_iter()
+            .fold((vec![], platform), |acc, _| one_cykle(acc.0, acc.1));
+
+        let mut step_pattern: Vec<(u32, String)> = vec![];
+        let mut step_size: usize = 0;
+        while step_size == 0 {
+            let current_value = pattern.remove(0);
+            step_pattern.push(current_value);
+            if step_pattern[0].1 == pattern[0].1 {
+                step_size = step_pattern.len();
+            }
+        }
+
+        // println!("{:?}", pattern);
+        println!("{:?}", step_pattern);
+        let step_pattern = step_pattern
+            .into_iter()
+            .map(|it| it.0)
+            .collect::<Vec<u32>>();
+
+        println!("{:?}", step_pattern);
+        let foo = (cyckles - 1001) % step_size as u64;
+
+        println!("mod {:?}", foo);
+        let result = step_pattern[foo as usize];
+        println!("resutl {:?}", result);
+        Some(result.to_string())
     }
     fn new(input: String) -> SolutionImp {
         SolutionImp { input }
     }
 }
 
-fn one_cykle(mut scores: Vec<u32>, mut foo: Vec<String>) -> (Vec<u32>, Vec<String>) {
+fn one_cykle(
+    mut scores: Vec<(u32, String)>,
+    mut foo: Vec<String>,
+) -> (Vec<(u32, String)>, Vec<String>) {
     let mut count = 0;
 
     while count < 4 {
-        foo = swap_axis(foo.clone());
+        foo = swap_axis(&foo);
         let mut new_foo: Vec<String> = vec![];
         for line in foo {
             let mut line = line.chars().rev().collect::<Vec<_>>();
@@ -99,17 +129,26 @@ fn one_cykle(mut scores: Vec<u32>, mut foo: Vec<String>) -> (Vec<u32>, Vec<Strin
     }
 
     let mut result: u32 = 0;
-    for line in foo.clone() {
+
+    for line in swap_axis(&foo) {
+        // println!("{}", line.blue());
         for (i, char) in line.chars().into_iter().enumerate() {
             if char == 'O' {
-                result = result + line.len() as u32 - i as u32;
+                result = result + i as u32 + 1;
             }
         }
     }
-    scores.push(result);
+
+    // println!("");
+    // println!("load: {}", result);
+    // println!("");
+    // println!("");
+    let mut hasher = DefaultHasher::new();
+    foo.hash(&mut hasher);
+    scores.push((result, hasher.finish().to_string()));
     (scores, foo)
 }
-fn swap_axis(pattern: Vec<String>) -> Vec<String> {
+fn swap_axis(pattern: &Vec<String>) -> Vec<String> {
     let width = pattern.len();
     let height = pattern.first().unwrap().len();
 
